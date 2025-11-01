@@ -72,4 +72,9 @@ export function dumpIni(data: Record<string, string|Record<string, string>>): st
   return out;
 }
 
-const formatOutputValue = (value: string) => value.split(/\r?\n/).map((line, index) => (index ? '\t' : '') + line).join('\n');
+const formatOutputValue = (val: string|string[]) => {
+  if (Array.isArray(val)) {
+    val = val.join(' ');
+  }
+  return val.split(/\r?\n/).map((line, index) => (index ? '\t' : '') + line).join('\n');
+};

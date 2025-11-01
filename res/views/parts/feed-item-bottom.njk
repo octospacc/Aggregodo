@@ -1,11 +1,14 @@
-<span tabindex="0" role="button" data-feed="{{ urlFor('/feed/:feed', { feed: slugifyUrl(feedsMap[entry.feedId].url) }) }}">
+{%- if not feed -%}
+  {%- set feed = feedsMap[entry.feedId] -%}
+{%- endif -%}
+<span tabindex="0" role="button" data-feed="{{ urlFor('/feed/:feed', { feed: slugifyUrl(feed.url) }) }}">
   <span class="icon">
-    {% if feedsMap[entry.feedId].icon %}
-      <img src="{{ feedsMap[entry.feedId].icon }}" />
+    {% if feed.icon %}
+      <img src="{{ feed.icon }}" />
     {% else %}
       <i class="material-icons">feed</i>
     {% endif %}
   </span>
-  {{ feedsMap[entry.feedId].name }}
+  {{ feed.name }}
 </span>
 <span class="time" title="{{ entry.published }}">{{ entry.relPublished }}</span>

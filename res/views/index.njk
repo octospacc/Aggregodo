@@ -1,10 +1,14 @@
 {%- extends "base.njk" -%}
-{%- set params -%}
-  {%- if limit -%}
-    &limit={{ limit }}
-  {%- endif -%}
-  {%- if search -%}
-    &search={{ search }}
+{%- set queryPagers -%}
+  {%- if limit -%}&limit={{- limit -}}{%- endif -%}
+  {%- if search -%}&search={{- search -}}{%- endif -%}
+{%- endset -%}
+{%- set queryParams -%}
+  {%- if feedsGroups -%}&feed-groups={{- feedsGroups -}}{%- endif -%}
+{%- endset -%}
+{%- set queryString -%}
+  {%- if queryParams -%}
+    ?{{- queryParams | safe -}}
   {%- endif -%}
 {%- endset -%}
 {%- block section -%}
@@ -20,7 +24,8 @@
 {%- endblock -%}
 {%- block tabitems -%}{%- endblock -%}
 {%- block menuitems -%}
-  <li><button class="mdl-menu__item" onclick="copyToClipboard(location.origin + (location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname) + '/atom'  + location.search);">Copy Bridge URL (Atom)</button></li>
+  <li><button class="mdl-menu__item" onclick="copyToClipboard(location.origin + (location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname) + '/atom' + location.search);">Copy Bridge URL (Atom)</button></li>
+  <li><button class="mdl-menu__item" onclick="copyFeedsGroups();">Copy Active Feed Groups</button></li>
   <li><form method="POST">
     <input type="hidden" name="action" value="set-prefs" />
     <input type="hidden" name="dkey" value="ReaderMode" />
@@ -41,7 +46,9 @@
   {% endif %}
 {%- endblock -%}
 {%- block canonical -%}
-  {# { %- if feed -% }{{ feed.url }}{ %- endif -% } #}
+  {%- if feed -%}
+    {{- linksPrefix -}}/feed/{{- slugifyUrl(feed.url) -}}
+  {%- endif -%}
 {%- endblock -%}
 {%- block content -%}
   {% if feed %}
@@ -56,7 +63,7 @@
             <span style="font-size: small;">(Hidden)</span>
           {% endif %}
         </h3>
-        <p style="word-break: break-word;"><a href="{{ feed.url }}" target="_blank" class="link-iconed">
+        <p style="word-break: break-word;"><a href="{{ feed.url }}{{ queryString }}" target="_blank" class="link-iconed">
           <i class="material-icons">open_in_new</i>
           {{ feed.url }}
         </a></p>
@@ -112,7 +119,7 @@
     {% for entry in entries %}
       <a rel="noopener"
         {% if prefs.ReaderMode %}
-          href="{{ urlFor('/entry/:entry', { entry: slugifyUrl(entry.link) }) }}"
+          href="{{ urlFor('/entry/:entry', { entry: slugifyUrl(entry.link) }) }}{{ queryString }}"
         {% else %}
           href="{{ entry.link }}" target="_blank"
         {% endif %}
@@ -135,7 +142,7 @@
     {% for entry in entries %}
       <a rel="noopener"
         {% if prefs.ReaderMode %}
-          href="{{ urlFor('/entry/:entry', { entry: slugifyUrl(entry.link) }) }}"
+          href="{{ urlFor('/entry/:entry', { entry: slugifyUrl(entry.link) }) }}{{ queryString }}"
         {% else %}
           href="{{ entry.link }}" target="_blank"
         {% endif %}
@@ -162,7 +169,7 @@
     {% for entry in entries %}
       <a rel="noopener"
         {% if prefs.ReaderMode %}
-          href="{{ urlFor('/entry/:entry', { entry: slugifyUrl(entry.link) }) }}"
+          href="{{ urlFor('/entry/:entry', { entry: slugifyUrl(entry.link) }) }}{{ queryString }}"
         {% else %}
           href="{{ entry.link }}" target="_blank"
         {% endif %}
@@ -186,7 +193,7 @@
   <div class="mdl-grid">
     <nav class="demo-nav {# mdl-color-text--grey-600 mdl-color-text--grey-50 #} mdl-cell mdl-cell--12-col">
       {% if page > 1 %}
-        <a href="?page={{ page - 1 }}{{ params }}" class="demo-nav__button">
+        <a href="?page={{ page - 1 }}{{ queryPagers }}{{ queryParams }}" class="demo-nav__button">
           <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation" data-upgraded=",MaterialButton,MaterialRipple">
             <i class="material-icons">arrow_back</i>
           <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></button>
@@ -195,7 +202,7 @@
       {% endif %}
       <div class="section-spacer"></div>
       {% if next %}
-        <a href="?page={{ next }}{{ params }}" class="demo-nav__button">
+        <a href="?page={{ next }}{{ queryPagers }}{{ queryParams }}" class="demo-nav__button">
           Older
           <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation" data-upgraded=",MaterialButton,MaterialRipple">
             <i class="material-icons">arrow_forward</i>

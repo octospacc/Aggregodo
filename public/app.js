@@ -7,6 +7,11 @@ function copyToClipboard(text) {
   }
 }
 
+function copyFeedsGroups() {
+  const groups = Array.from(document.querySelectorAll('ul[for=feeds-groups] input[type=checkbox]')).filter(el => el.checked).map(el => el.dataset.group);
+  copyToClipboard(location.origin + (groups.length ? `/?feed-groups=${groups.join('+')}` : ''));
+}
+
 function createWebSocket(url, onmessage) {
   let ws;
   let reconnectInterval = 1000; // 1 second

@@ -30,7 +30,9 @@ html, body {
 }
 .demo-drawer {
   border: none;
+  overflow-x: hidden;
 }
+
 /* iOS Safari specific workaround */
 .demo-drawer .mdl-menu__container {
   z-index: -1;
@@ -39,6 +41,7 @@ html, body {
   z-index: -2;
 }
 /* END iOS Safari specific workaround */
+
 .demo-drawer .mdl-menu .mdl-menu__item {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -714,10 +717,6 @@ body.flow-layout #flow-layout {
   color: inherit;
   text-decoration: none;
 }
-
-/* [hidden] {
-  display: none !important;
-} */
 
 .mdl-menu .mdl-menu__item {
   width: 100%;

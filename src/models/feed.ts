@@ -13,6 +13,7 @@ export class Feed extends Model<InferAttributes<Feed>, InferCreationAttributes<F
   declare lastModified?: Date|string|null;
   declare lastStatus?: string|null;
   // declare cache_images?: boolean;
+  declare groups?: string[]|null;
   declare status?: 'hidden'|'disabled'|null;
   declare type?: string|null;
   // declare user_agent?: string|null;

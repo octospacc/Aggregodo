@@ -54,3 +54,17 @@ export const filterObject = (obj: object, keys: string[], inclusive: boolean = t
   const entries = Object.entries(obj).filter(([key, value]) => (value && (inclusive ? keys.includes(key) : !keys.includes(key))));
   return (revert ? Object.fromEntries(entries) : entries);
 }
+
+export function slugifyUrl(url: string) {
+  return url
+    ?.toLowerCase()
+    ?.replace(/^https?:\/\//, '')  // Remove protocol
+    ?.replace(/[/?=&]/g, '-')      // Replace URL symbols with hyphens
+    ?.replace(/[^a-z0-9-.]/g, ''); // Remove other special characters
+}
+
+export const parseWsv = (str: string) => (str
+  .trim()
+  .replaceAll('\n', ' ').replaceAll('\t', ' ')
+  .split(' ')
+  .filter(word => word));

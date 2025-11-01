@@ -2,7 +2,13 @@
 
 _L'aggregatore di feed della goduria!!!_
 
-Work-in-progress advanced web-based feed aggregator, focused on public use and scraping features.
+<table><tr>
+<td><a href="https://gitlab.com/octospacc/Aggregodo"><b>GitLab.com</b></a></td>
+<td><a href="https://github.com/octospacc/Aggregodo">GitHub</a></td>
+<td><a href="https://gitea.it/octospacc/Aggregodo">Gitea.it</a></td>
+</tr></table>
+
+Work-in-progress advanced web-based feed aggregator, focused on public use and web scraping features.
 
 Live demo available on the official, personal instance: <https://aggregodo.octt.eu.org>.
 
